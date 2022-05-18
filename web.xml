@@ -7,4 +7,13 @@
         <servlet-name>Search</servlet-name>
         <url-pattern>/search</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Restaurant</servlet-name>
+        <servlet-class>com.licencepro.servlet.Restaurant</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Restaurant</servlet-name>
+        <url-pattern>/restaurant</url-pattern>
+    </servlet-mapping>
 </web-app>
