@@ -1,0 +1,35 @@
+1. Qu'est-ce que Maven ?
+Maven est un système de gestion de la compilation permettant d'automatiser la compilation d'un projet Java et d'installer automatiquement les dépendances nécessaires à la compilation, à l'exécution ou aux tests de la production logicielle.
+
+2. Quelle est l'aborescence d'un projet d'une application web utilisant Maven ?
+À la racine du projet, on trouve le fichier pom.xml qui décrit toutes les dépendances et les options de compilation du projet. On a aussi à la racine un dossier src qui contient un dossier main qui contient un dossier java. Dans le dossier java, se trouvent les sources Java rangées par packages. Maven place tous les fichiers compilés à la racine du projet dans le dossier target. Les classes Java compilées sont dans target/classes. Le fichier web.xml se trouve lui aussi à la racine et contient la configuration des servlets.
+
+3. Citer 2 autres outils "concurrents" de Maven.
+Gradle et Apache Ant.
+
+4. Qu'est-ce que le "TDD" ?
+Le TDD ou "Test Driven Development" est une pratique de développement logicielle visant à écrire les tests du logiciel avant d'écrire son implémentation propre. Cela permet de poser les comportements attendus sous la forme de tests avant de débuter l'écriture complète du programme et de vérifier ensuite si les comportements et règles souhaités au départ sont bien respectés.
+
+5. Quelles sont les principes SOLID ?
+Single responsibility principle : une classe ne doit être modifiée que pour une seule raison
+Open closed : ouvert à l'extension mais fermé à la modification
+Liskov substitution : tout le code utilise des interfaces, permet de découpler et de réutiliser des parties de code facilement
+Interface segregation : une interface par cas d'usage de la classe
+Dependency inversion : les modules de haut niveau et de bas niveau doivent dépendre d'abstractions
+
+6. Citer 3 serveurs d'applications java
+Tomcat, GlassFish (Oracle) et Jetty
+
+7. Dans quel fichier se trouve la configuration des servlets d'une application web ?
+Dans le fichier web.xml
+
+8. Donner une rapide définition de REST
+REST (REpresentational State Transfer) est un ensemble de règles concernant les services web. Un projet logiciel est dit RESTful s'il respecte les règles REST. Une des règles fondamentales est qu'aucun contexte client n'est conservé sur le serveur et que toutes les données permettant d'identifier la session du client et sa demande sont présents dans la requête HTTP. On dit que le serveur est "sans état".
+
+9. Quelles sont les 3 directives spécifiées par les spécifications des JSP ? (les citer et indiquer leurs rôles)
+page : permet de configurer la page JSP, elle se place souvent avant même la balise <html>
+include : inclut des ressources statiques dans la page, évite les redondances de code ou de HTML
+taglib : permet au développeur de créer ses propres tags
+
+10. Donner une rapide définition de ORM
+Un système ORM (Object Relational Mapping) permet d'utiliser une base de données relationnelle à la manière d'une base de données orientée objet. C'est très pratique quand le langage est lui aussi fortement orienté objet comme Java. L'ORM masque les particularités des différentes implémentations de base de données et supporte souvent plusieurs SGBD différents. Il simplifie la programmation avec une base de données et peut même affranchir le développeur de l'écriture de requêtes SQL.

@@ -24,7 +24,7 @@ examen/
         |
         |-- web.xml
         |
-        |-- classes
+        |-- classes/
 ```
 
 Le dossier `classes` se trouve après la compilation Maven dans le dossier
