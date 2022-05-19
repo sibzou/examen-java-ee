@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>app</title>
+        <style>
+            body {
+                margin: auto;
+                padding: 1rem;
+                max-width: 48rem;
+                font-family: sans-serif;
+            }
+
+            #searchbar {
+                width: 100%;
+                box-sizing: border-box;
+                margin-bottom: 2rem;
+                background: #F4F4F4;
+                border: none;
+                padding: 1rem;
+                outline: none;
+                border-radius: 2rem;
+            }
+
+            .search-restaurant {
+                padding: 1rem;
+                background: #F4F4F4;
+                border-radius: 1rem;
+                cursor: pointer;
+                margin-bottom: 1rem;
+            }
+
+            .search-restaurant h3 {
+                margin-top: 0;
+                margin-bottom: 1rem;
+            }
+
+            .search-restaurant p {
+                margin: 0;
+            }
+
+            .back-button-container {
+                margin-top: 0;
+                margin-bottom: 3rem;
+            }
+
+            .back-button-container span {
+                cursor: pointer;
+            }
+
+            #restaurant-page #address {
+                margin-bottom: 3rem;
+            }
+
+            .dish {
+                margin-bottom: 1rem;
+                padding: 1rem;
+                background: #F4F4F4;
+                border-radius: 1rem;
+            }
+
+            .dish .name {
+                margin-top: 0;
+                margin-bottom: 1rem;
+            }
+
+            .dish .type {
+                margin-top: 0;
+                margin-bottom: 1rem;
+                color: #808080;
+            }
+
+            .dish .price {
+                margin: 0;
+                color: #0000FF;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="search-page">
+            <input id="searchbar" type="texe" placeholder="Rechercher un restaurant"/>
+            <div id="search-results">
+            </div>
+        </div>
+        <div id="restaurant-page">
+            <p class="back-button-container"><span>Retour</span></p>
+            <h2></h2>
+            <h3></h3>
+            <p id="address"></p>
+            <h3>Plats</h3>
+            <div id="dishes">
+                <div class="dish">
+                    <p class="name">Saucisses frites</p>
+                    <p class="type">plat</p>
+                    <p class="price">3,45 €</p>
+                </div>
+                <div class="dish">
+                    <p class="name">Saucisses frites</p>
+                    <p class="type">plat</p>
+                    <p class="price">3,45 €</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+    const searchPage = document.querySelector("#search-page");
+    const searchbar = document.querySelector("#searchbar");
+    const searchXhr = new XMLHttpRequest();
+    const searchResultsContainer = document.querySelector("#search-results");
+
+    const restaurantPage = document.querySelector("#restaurant-page");
+    const restaurantBackButton = document.querySelector("#restaurant-page .back-button-container span");
+    const restaurantTitle = document.querySelector("#restaurant-page h2");
+    const restaurantType = document.querySelector("#restaurant-page h3");
+    const restaurantAddress = document.querySelector("#restaurant-page #address");
+    const restaurantDishesContainer = document.querySelector("#dishes");
+    const restaurantXhr = new XMLHttpRequest();
+
+    searchXhr.addEventListener("load", () => {
+        const searchResults = JSON.parse(searchXhr.responseText);
+        displaySearchResults(searchResults);
+    });
+
+    const searchAll = () => {
+        searchXhr.open("GET", "search");
+        searchXhr.send();
+    }
+
+    searchbar.addEventListener("input", () => {
+        if(searchbar.value == "") {
+            searchAll();
+        } else {
+            const encodedQuery = encodeURIComponent(searchbar.value);
+            searchXhr.open("GET", "search?query=" + encodedQuery);
+            searchXhr.send();
+        }
+    });
+
+    const displaySearchResults = searchResults => {
+        searchResultsContainer.innerHTML = "";
+
+        for(let searchRes of searchResults) {
+            const searchResNode = document.createElement("div");
+            searchResNode.className = "search-restaurant";
+
+            const searchResTitle = document.createElement("h3");
+            searchResTitle.textContent = searchRes.name;
+
+            const searchResType = document.createElement("p");
+            searchResType.textContent = searchRes.kitchenType;
+
+            searchResNode.appendChild(searchResTitle);
+            searchResNode.appendChild(searchResType);
+
+            searchResNode.addEventListener("click", () => {
+                restaurantXhr.open("GET", "restaurant?id=" + searchRes.id);
+                restaurantXhr.send();
+            })
+
+            searchResultsContainer.appendChild(searchResNode);
+        }
+    }
+
+    const hideAllPages = () => {
+        searchPage.style.display = "none";
+        restaurantPage.style.display = "none";
+    }
+
+    const showSearchPage = () => {
+        hideAllPages();
+        searchPage.style.display = "block";
+    }
+
+    const openRestaurantDetail = restaurant => {
+        hideAllPages();
+        restaurantPage.style.display = "block";
+
+        restaurantTitle.textContent = restaurant.name;
+        restaurantType.textContent = restaurant.kitchenType;
+        restaurantAddress.textContent = restaurant.address;
+
+        restaurantDishesContainer.innerHTML = "";
+
+        for(let dish of restaurant.dishes) {
+            const dishNode = document.createElement("div");
+            dishNode.className = "dish";
+
+            const dishNodeTitle = document.createElement("p");
+            dishNodeTitle.className = "name";
+            dishNodeTitle.textContent = dish.name;
+
+            const dishNodeType = document.createElement("p");
+            dishNodeType.className = "type";
+            dishNodeType.textContent = dish.type;
+
+            const dishNodePrice = document.createElement("p");
+            dishNodePrice.className = "price";
+            dishNodePrice.textContent = dish.price;
+
+            dishNode.appendChild(dishNodeTitle);
+            dishNode.appendChild(dishNodeType);
+            dishNode.appendChild(dishNodePrice);
+
+            restaurantDishesContainer.appendChild(dishNode);
+        }
+    }
+
+    restaurantBackButton.addEventListener("click", showSearchPage);
+
+    restaurantXhr.addEventListener("load", () => {
+        const restaurant = JSON.parse(restaurantXhr.responseText);
+        openRestaurantDetail(restaurant);
+    });
+
+    showSearchPage();
+    searchAll();
+</script>
